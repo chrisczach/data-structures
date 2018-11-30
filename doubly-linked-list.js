@@ -21,4 +21,23 @@ class DoublyLinkedList {
     this.tail  = node;
     return true;
   }
+
+  pop(){
+    const popped = this.tail;
+    if(!this.head) {return false
+    } else if(this.length === 1) {
+      this.head = this.tail = null;
+    } else {
+      this.tail = this.tail.prev;
+      this.tail.next = null;
+    }
+    this.length--;
+    return popped;
+  }
 }
+
+const list = new DoublyLinkedList();
+list.push(1);
+list.push(2);
+list.push(3);
+
