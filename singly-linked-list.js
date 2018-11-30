@@ -70,16 +70,38 @@ class SinglyLinkedList {
     }
     return node 
   }
+
+  set(index, value) {
+    if(index < 0 || index >= this.length) return null;
+    this.get(index).val = value
+     return  this.get(index) || undefined;
+  }
+
+  insert(index, value) {
+    if(index < 0 || index > this.length) {
+      return null
+    } else if( index === 0) {
+      return this.unshift(value)
+    } else if(index === this.length) {
+      return this.push(value)
+    } else {
+      const node = new Node(value);
+      const prevNode = this.get(index-1);
+      const nextNode = prevNode.next;
+      prevNode.next = node;
+      node.next = nextNode;
+      return node
+    }
+
+  }
 }
 
 const list = new SinglyLinkedList();
 list.push('index 0');
 list.push('index 1');
 list.push('index 2');
-list.push('index 3');
 list.push('index 4');
 list.push('index 5');
-list.pop()
-
-list.get(4)
-list.get(5)
+list.get(3);
+list.insert(3,'index 3');
+list.get(3);
