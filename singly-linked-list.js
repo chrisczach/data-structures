@@ -28,18 +28,26 @@ class SinglyLinkedList {
   pop() {
     if (this.length === 0) return undefined;
     if (this.length === 1) {
-      this.head = null;
-      this.tail = null;
-      this.length = 0;
-      return null;
+      let poppedValue = this.head;
+     [this.head,  this.tail,  this.length ] = [null, null, 0]
+      return poppedValue;
     }
     let current = this.head;
-    while (current.next.next) {
-      current = current.next;
-    }
+    while (current.next.next)  current = current.next;
+    let  poppedValue = current.next;
     current.next = null;
     this.tail = current;
     this.length--;
-    return current;
+    return poppedValue;
   }
+
+  shift() {
+    if(this.length === 0) return null
+    const shiftValue = this.head;
+    this.head = this.head.next;
+    this.length--;
+    return shiftValue
+    
+  }
+
 }
