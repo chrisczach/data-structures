@@ -71,7 +71,7 @@ class DoublyLinkedList {
       }
     } else {
       node = this.tail;
-      for (let i = this.length; i > index; i--) {
+      for (let i = index; i < this.length-1; i++) {
         node = node.prev;
       }
     }
@@ -104,10 +104,17 @@ class DoublyLinkedList {
       return true;
     }
   }
+
+  remove(index) {
+    const node = this.get(index);
+    if (node === false) { return false };
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.next = null;
+    node.prev = null;
+    this.length--;
+    return node;
+  }
 }
 
-const list = new DoublyLinkedList();
-list.push(1);
-list.push(2);
-list.push(3);
 
