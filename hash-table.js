@@ -38,6 +38,27 @@ class HashTable {
       return this.data[hash].find(e=> e[0] === key)
     }
   }
+  keys() {
+    const arr = [];
+    this.data.forEach(e => {
+      e.forEach(e2 => {
+        arr.push(e2[0])
+      })
+    });
+    return arr;
+  }
+
+  values() {
+    const arr = [];
+    this.data.forEach(e => {
+      e.forEach(e2 => {
+        if (arr.indexOf(e2[1]) === -1) {
+          arr.push(e2[1])
+        }
+      })
+    });
+    return arr;
+  }
 }
 
 const hash = new HashTable();
@@ -45,3 +66,7 @@ debugger
 hash.set('testing', 1);
 hash.set('another', 2);
 hash.set('third', 3);
+hash.set('fourth', 4);
+hash.set('fifth', 'five');
+hash.set('sixth', 1);
+hash.set('7th', 2);
