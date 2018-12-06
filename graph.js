@@ -21,8 +21,8 @@ class Graph {
 
     list[v1].push(v2);
     list[v2].push(v1);
-    list[v1].sort();
-    list[v2].sort();
+    list[v1].sort(/* (a,b) => a < b ? 1 : -1 */);
+    list[v2].sort(/* (a,b) => a < b ? 1 : -1 */);
     return `${v1} and ${v2} edge added`
   }
 
@@ -38,7 +38,7 @@ class Graph {
    }
  
    list[v1] = list[v1]. filter(e=> e !== v2);
-   list[v2] =   list[v2] .filter(e=> e !== v1);
+   list[v2] = list[v2] .filter(e=> e !== v1);
    return `${v1} and ${v2} edge removed`
    }
  
@@ -49,11 +49,11 @@ class Graph {
      return `Vertex ${ delete list[vertex] && vertex} has been removed`
    }
 
-   dfsRecursive (vertex, visited = []) {
+   dfsRecursive (start, visited = []) {
     const list = this.adjacencyList;
-    visited.push(vertex);
-    if(list[vertex].length === 0) return visited;
-    list[vertex].forEach(e=>{
+    visited.push(start);
+    if(list[start].length === 0) return visited;
+    list[start].forEach(e=>{
       if(visited.indexOf(e) === -1) {
        this.dfsRecursive(e, visited)
       }
@@ -79,6 +79,21 @@ while(hold.length !==  0) {
      }
      return results;
    }
+  
+  bfs(start) {
+    const queue = [];
+    queue.push(start);
+    const visited = [];
+    while (queue.length !== 0) {
+      const vertex = queue.shift();
+      if (visited.indexOf(vertex) === -1) {
+        this.adjacencyList[vertex].forEach(e => queue.push(e));
+        visited.push(vertex);
+      }
+
+    }
+    return visited;
+  }
 }
 
 const graph = new Graph();
@@ -96,5 +111,6 @@ graph.addEdge('C','E');
 graph.addEdge('D','E');
 graph.addEdge('D','F');
 graph.addEdge('E','F');
-graph.dfsRecursive('C');
-graph.dfsIterative('C');
+graph.dfsRecursive('A');
+graph.dfsIterative('A');
+graph.bfs('A');
