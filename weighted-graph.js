@@ -61,11 +61,30 @@ class WeightedGraph {
 
   shortestPath(start, end) {
     const distances = {};
+    const previous = {};
+    const queue = [];
+    for (const vertex in this.adjacencyList) {
+      previous[vertex] = null;
+      if (vertex === start) {
+        distances[vertex] = 0;
+        queue.push({ vertex, distance: 0 });
+      } else {
+        distances[vertex] = Infinity;
+        queue.push({ vertex, distance: Infinity });
+      }
+    }
+    queue.sort((a, b) => a.distance - b.distance);
     
+    while (queue.length !== 0) {
+      const vertex = queue.shift();
+    // Left off here
+    //
+    //  
+    }
   }
 }
 
-const graph = new Graph();
+const graph = new WeightedGraph();
 graph.addVertex('A');
 graph.addVertex('B');
 graph.addVertex('C');
@@ -80,5 +99,4 @@ graph.addEdge('C', 'E', 5);
 graph.addEdge('D', 'E', 30);
 graph.addEdge('D', 'F', 25);
 graph.addEdge('E', 'F', 45);
-
-console.log(JSON.stringify(graph.adjacencyList, null, 2));
+graph.shortestPath('A', 'E');
