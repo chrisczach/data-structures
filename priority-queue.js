@@ -66,5 +66,4 @@ q.insert('test 6', 6);
 q.insert('test 1', 1);
 q.insert('test 2', 2);
 q.insert('test 3', 3);
-debugger;
 q.extract();
