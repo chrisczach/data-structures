@@ -1,3 +1,17 @@
+class PriorityQueue {
+  constructor(){
+    this.values = [];
+  }
+  enq(value,priority) {
+    this.values.push({value, priority});
+    this.values.sort((a,b)=> a.priority - b.priority );
+  };
+
+  deq() {
+    return this.values.shift();
+  };
+}
+
 class WeightedGraph {
   constructor() {
     this.adjacencyList = {};
@@ -60,27 +74,43 @@ class WeightedGraph {
   }
 
   shortestPath(start, end) {
+    const nodes = new PriorityQueue();
     const distances = {};
     const previous = {};
-    const queue = [];
-    for (const vertex in this.adjacencyList) {
+    const path = [end];
+    let smallest;
+    //initialize
+    for(const vertex in this.adjacencyList) { 
+      distances[vertex] = vertex === start ? 0 : Infinity;
+      nodes.enq(vertex, vertex === start ? 0 : Infinity);
       previous[vertex] = null;
-      if (vertex === start) {
-        distances[vertex] = 0;
-        queue.push({ vertex, distance: 0 });
-      } else {
-        distances[vertex] = Infinity;
-        queue.push({ vertex, distance: Infinity });
+    };
+    //iterate through nodes
+      while(nodes.values.length) {
+        smallest = nodes.deq().value;
+        if(smallest === end) {
+          const build = (end, previous) => {
+            if(previous[end] === null) {return 
+            } else {
+              path.push(previous[end]);
+              build(previous[end],previous)
+            } 
+          }
+          build(end,previous)
+          return path.reverse();
+        }
+        for(const neighbor in this.adjacencyList[smallest]){
+          const next = this.adjacencyList[smallest][neighbor];
+          //calculate distance to next node
+          const curDistance = distances[smallest] + next.weight;
+          if(curDistance < distances[next.node]) {
+            distances[next.node] = curDistance;
+            previous[next.node] = smallest;
+            nodes.enq(next.node, curDistance);
+          }
+        }
+
       }
-    }
-    queue.sort((a, b) => a.distance - b.distance);
-    
-    while (queue.length !== 0) {
-      const vertex = queue.shift();
-    // Left off here
-    //
-    //  
-    }
   }
 }
 
@@ -92,11 +122,13 @@ graph.addVertex('D');
 graph.addVertex('E');
 graph.addVertex('F');
 
-graph.addEdge('A', 'B', 10);
-graph.addEdge('A', 'C', 20);
-graph.addEdge('B', 'D', 50);
-graph.addEdge('C', 'E', 5);
-graph.addEdge('D', 'E', 30);
-graph.addEdge('D', 'F', 25);
-graph.addEdge('E', 'F', 45);
+graph.addEdge('A', 'B', 4);
+graph.addEdge('A', 'C', 2);
+graph.addEdge('B', 'E', 3);
+graph.addEdge('C', 'D', 2);
+graph.addEdge('C', 'F', 4);
+graph.addEdge('D', 'E', 3);
+graph.addEdge('D', 'F', 1);
+graph.addEdge('E', 'F', 1);
+
 graph.shortestPath('A', 'E');
