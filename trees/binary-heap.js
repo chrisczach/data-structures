@@ -25,7 +25,7 @@ class BinaryHeap {
     this.values.push(new Node(value, priority));
     let index = this.values.length - 1;
     let parent = Math.floor((index - 1) / 2);
-
+    //still bubbling
     while (this.compare(this.values[index], this.values[parent])) {
       [this.values[index], this.values[parent]] = [
         this.values[parent],
@@ -40,6 +40,7 @@ class BinaryHeap {
   //extract root of heap
   extract() {
     const values = this.values;
+    //handle edge cases
     if (values.length === 0) return null;
     if (values.length === 1) return values.pop();
     if (values.length === 2) {
@@ -49,6 +50,7 @@ class BinaryHeap {
         return values.pop();
       }
     }
+    //bubble up new root
     [values[0], values[values.length - 1]] = [
       values[values.length - 1],
       values[0]

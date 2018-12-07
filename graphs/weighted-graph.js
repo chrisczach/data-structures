@@ -1,4 +1,4 @@
-const BinaryHeap = require('./binary-heap');
+const BinaryHeap = require('../trees/binary-heap');
 
 class WeightedGraph {
   constructor() {
