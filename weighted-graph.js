@@ -62,21 +62,23 @@ class WeightedGraph {
   }
 
   shortestPath(start, end) {
-    const nodes = new BinaryHeap('min');
+    const nodes = new BinaryHeap('min'); //MinBinaryHeap for queueing unvisited nodes
     const distances = {};
     const previous = {};
     const path = [end];
     let smallest;
-    //initialize
+    // add start to MinBinaryHeap queue
+    nodes.insert(start, 0);
+    //initialize distances and previous objects
     for(const vertex in this.adjacencyList) { 
       distances[vertex] = vertex === start ? 0 : Infinity;
-      nodes.insert(vertex, vertex === start ? 0 : Infinity);
       previous[vertex] = null;
     };
     //iterate through nodes
       while(nodes.values.length) {
         smallest = nodes.extract().value;
-        if(smallest === end) {
+        //if end has been reached, push nodes visited to path array
+        if (smallest === end) {
           const build = (end, previous) => {
             if(previous[end] === null) {return 
             } else {
@@ -87,13 +89,18 @@ class WeightedGraph {
           build(end,previous)
           return path.reverse();
         }
+        //for each neighboring node 
         for(const neighbor in this.adjacencyList[smallest]){
           const next = this.adjacencyList[smallest][neighbor];
-          //calculate distance to next node
+          //calculate distance to node from current path
           const curDistance = distances[smallest] + next.weight;
-          if(curDistance < distances[next.node]) {
+          //update distance object for node if new path is shorter than stored path
+          if (curDistance < distances[next.node]) {
+            //add distance from start for each node
             distances[next.node] = curDistance;
+            //add last stop before each node
             previous[next.node] = smallest;
+            //add node to nodes queue
             nodes.insert(next.node, curDistance);
           }
         }
