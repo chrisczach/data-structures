@@ -5,6 +5,7 @@ class Node {
   }
 }
 class BinaryHeap {
+  //Pass 'max' when creating new instance for MaxBinaryHeap, pass in 'min' or leave blank for MinBinaryHeap
   constructor(minOrMax = 'min') {
     this.sortBy = minOrMax;
     this.values = [];
