@@ -1,18 +1,4 @@
-class PriorityQueue {
-  constructor(){
-    this.values = [];
-  }
-  enq(value,priority) {
-    this.values.push({value, priority});
-    this.values.sort((a,b)=> a.priority - b.priority );
-  };
-
-  deq() {
-    return this.values.shift();
-  };
-}
-
-
+const BinaryHeap = require('./binary-heap');
 
 class WeightedGraph {
   constructor() {
@@ -76,7 +62,7 @@ class WeightedGraph {
   }
 
   shortestPath(start, end) {
-    const nodes = new PriorityQueue();
+    const nodes = new BinaryHeap('min');
     const distances = {};
     const previous = {};
     const path = [end];
@@ -84,12 +70,12 @@ class WeightedGraph {
     //initialize
     for(const vertex in this.adjacencyList) { 
       distances[vertex] = vertex === start ? 0 : Infinity;
-      nodes.enq(vertex, vertex === start ? 0 : Infinity);
+      nodes.insert(vertex, vertex === start ? 0 : Infinity);
       previous[vertex] = null;
     };
     //iterate through nodes
       while(nodes.values.length) {
-        smallest = nodes.deq().value;
+        smallest = nodes.extract().value;
         if(smallest === end) {
           const build = (end, previous) => {
             if(previous[end] === null) {return 
@@ -108,7 +94,7 @@ class WeightedGraph {
           if(curDistance < distances[next.node]) {
             distances[next.node] = curDistance;
             previous[next.node] = smallest;
-            nodes.enq(next.node, curDistance);
+            nodes.insert(next.node, curDistance);
           }
         }
 

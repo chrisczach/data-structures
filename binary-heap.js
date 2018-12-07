@@ -12,9 +12,9 @@ class BinaryHeap {
 
   compare(node, parent) {
     if (this.sortBy === 'max') {
-      return node && parent && node.priority > parent.priority
+      return node && parent && node.priority > parent.priority;
     } else {
-      return node && parent && node.priority < parent.priority
+      return node && parent && node.priority < parent.priority;
     }
   }
   insert(value, priority) {
@@ -23,7 +23,10 @@ class BinaryHeap {
     let parent = Math.floor((index - 1) / 2);
 
     while (this.compare(this.values[index], this.values[parent])) {
-      [this.values[index], this.values[parent]] = [this.values[parent], this.values[index]];
+      [this.values[index], this.values[parent]] = [
+        this.values[parent],
+        this.values[index]
+      ];
       index = parent;
       parent = Math.floor((index - 1) / 2);
     }
@@ -40,14 +43,19 @@ class BinaryHeap {
       } else {
         return values.pop();
       }
-     }
-    [values[0], values[values.length - 1]] = [values[values.length - 1], values[0]];
+    }
+    [values[0], values[values.length - 1]] = [
+      values[values.length - 1],
+      values[0]
+    ];
     const ans = values.pop();
     let index = 0;
     let left = 2 * index + 1;
     let right = 2 * index + 2;
-
-    while (this.compare(values[left],values[index]) || this.compare(values[right], values[index])) {
+    while (
+      this.compare(values[left], values[index]) ||
+      this.compare(values[right], values[index])
+    ) {
       if (this.compare(values[left], values[right])) {
         if (left >= values.length) return ans;
         [values[index], values[left]] = [values[left], values[index]];
@@ -59,9 +67,7 @@ class BinaryHeap {
         index = right;
         right = 2 * index + 2;
       }
-
     }
-
     return ans;
   }
 }
@@ -72,3 +78,5 @@ heap.insert('testing', 1);
 heap.insert('testing', 3);
 heap.insert('testing', 7);
 heap.insert('testing', 2);
+
+module.exports = BinaryHeap;
