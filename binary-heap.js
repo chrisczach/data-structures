@@ -5,12 +5,13 @@ class Node {
   }
 }
 class BinaryHeap {
-  //Pass 'max' when creating new instance for MaxBinaryHeap, pass in 'min' or leave blank for MinBinaryHeap
+  //Pass 'max' as argument when creating new instance for MaxBinaryHeap, pass in 'min' or leave blank for MinBinaryHeap
   constructor(minOrMax = 'min') {
     this.sortBy = minOrMax;
     this.values = [];
   }
 
+  //compare  min or max depending on sortBy value
   compare(node, parent) {
     if (this.sortBy === 'max') {
       return node && parent && node.priority > parent.priority;
@@ -18,7 +19,9 @@ class BinaryHeap {
       return node && parent && node.priority < parent.priority;
     }
   }
-  insert(value, priority) {
+
+  //insert  node at next open spot in heap then bubbles up to correct position
+  insert(value, priority = this.sortBy === 'min' ? Infinity : 0) {
     this.values.push(new Node(value, priority));
     let index = this.values.length - 1;
     let parent = Math.floor((index - 1) / 2);
@@ -34,6 +37,7 @@ class BinaryHeap {
     return this;
   }
 
+  //extract root of heap
   extract() {
     const values = this.values;
     if (values.length === 0) return null;
@@ -51,22 +55,20 @@ class BinaryHeap {
     ];
     const ans = values.pop();
     let index = 0;
-    let left = 2 * index + 1;
-    let right = 2 * index + 2;
+    const left = () => 2 * index + 1;
+    const right = () => 2 * index + 2;
     while (
-      this.compare(values[left], values[index]) ||
-      this.compare(values[right], values[index])
+      this.compare(values[left()], values[index]) ||
+      this.compare(values[right()], values[index])
     ) {
-      if (this.compare(values[left], values[right])) {
-        if (left >= values.length) return ans;
-        [values[index], values[left]] = [values[left], values[index]];
-        index = left;
-        left = 2 * index + 1;
+      if (this.compare(values[left()], values[right()])) {
+        if (left() >= values.length) return ans;
+        [values[index], values[left()]] = [values[left()], values[index]];
+        index = left();
       } else {
-        if (right >= values.length) return ans;
-        [values[index], values[right]] = [values[right], values[index]];
-        index = right;
-        right = 2 * index + 2;
+        if (right() >= values.length) return ans;
+        [values[index], values[right()]] = [values[right()], values[index]];
+        index = right();
       }
     }
     return ans;
