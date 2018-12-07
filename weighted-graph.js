@@ -11,26 +11,31 @@ class WeightedGraph {
       : (this.adjacencyList[value] = []);
   }
 
-  addEdge(v1, v2, weight) {
+  addEdge(from, to, weight, oneDirection = false) {
     const list = this.adjacencyList;
-    if (!list[v1] || !list[v2]) {
+    if (!list[from] || !list[to]) {
       const missing =
-        !list[v1] && !list[v2]
-          ? `${v1} and ${v2} are `
-          : !list[v1]
-          ? `${v1} is`
-          : `${v2} is`;
+        !list[from] && !list[to]
+          ? `${from} and ${to} are `
+          : !list[from]
+          ? `${from} is`
+          : `${to} is`;
       return `Vertex ${missing} invalid`;
     }
-    if (list[v1].indexOf(v2) !== -1) {
-      return `${v1} and ${v2} edge already exist`;
+    if (list[from].indexOf(to) !== -1) {
+      return `${from} and ${to} edge already exist`;
     }
 
-    list[v1].push({ node: v2, weight });
-    list[v2].push({ node: v1, weight });
-    list[v1].sort(/* (a,b) => a < b ? 1 : -1 */);
-    list[v2].sort(/* (a,b) => a < b ? 1 : -1 */);
-    return `${v1} and ${v2} edge added`;
+    list[from].push({ node: to, weight });
+    list[from].sort();
+    if (!oneDirection) {
+      list[to].push({ node: from, weight });
+    list[to].sort();
+    return `${from} and ${to} edge added`;
+    } else {
+      return `${from} and ${to} one way edge added`;
+    }
+    
   }
 
   removeVertex(vertex) {
@@ -40,25 +45,28 @@ class WeightedGraph {
     return `Vertex ${delete list[vertex] && vertex} has been removed`;
   }
 
-  removeEdge(v1, v2) {
+  removeEdge(start, end, oneDirection = false) {
     const list = this.adjacencyList;
-    if (!list[v1] || !list[v2]) {
+    if (!list[start] || !list[end]) {
       const missing =
-        !list[v1] && !list[v2]
-          ? `${v1} and ${v2} are `
-          : !list[v1]
-          ? `${v1} is`
-          : `${v2} is`;
+        !list[start] && !list[end]
+          ? `${start} and ${end} are `
+          : !list[start]
+          ? `${start} is`
+          : `${end} is`;
       return `Vertex ${missing} invalid`;
     }
 
-    if (list[v1].findIndex(e => e.node === v2) === -1) {
-      return `${v1} and ${v2} edge doesn't exist`;
+    if (list[start].findIndex(e => e.node === end) === -1) {
+      return `${start} and ${end} edge doesn't exist`;
     }
-
-    list[v1] = list[v1].filter(e => e.node !== v2);
-    list[v2] = list[v2].filter(e => e.node !== v1);
-    return `${v1} and ${v2} edge removed`;
+    list[start] = list[start].filter(e => e.node !== end);
+    if (oneDirection) {
+      return `${start} to ${end} direction edge removed`
+    } else {
+      list[end] = list[end].filter(e => e.node !== start);
+      return `${start} and ${end} edge removed`;
+    }
   }
 
   shortestPath(start, end) {
